@@ -1,0 +1,12 @@
+version: '3'
+services:
+  repetier:
+    build: .
+    ports:
+      - "3344:3344"
+    volumes:
+      - data:/var/lib/Repetier-Server
+
+volumes:
+  data:
+    driver: "local"
