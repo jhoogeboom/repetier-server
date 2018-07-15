@@ -1,15 +1,12 @@
 FROM resin/rpi-raspbian:latest
 
 RUN apt-get update \
-    && apt-get upgrade -y \
-    && apt-get dist-upgrade -y \
     && apt-get install wget
 
 RUN wget --output-document repetier-server.deb -q http://download.repetier.com/files/server/debian-armel/Repetier-Server-0.90.1-Linux.deb
 RUN dpkg -i repetier-server.deb
 
 
-VOLUME /var/lib/Repetier-Server
 
 # COPY entrypoint.sh /entrypoint.sh
 # RUN chmod 755 /entrypoint.sh
