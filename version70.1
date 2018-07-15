@@ -1,0 +1,20 @@
+#!/bin/bash
+echo Install Repetier-Server
+echo "You may see warnings about groups. These can be ignored."
+adduser --quiet --home /var/lib/Repetier-Server --system --disabled-login --ingroup dialout repetierserver
+adduser repetierserver tty
+adduser repetierserver intserial
+adduser repetierserver ugpio
+update-rc.d RepetierServer start 20 2 3 4 5 . stop 20 0 1 6 . 2> /dev/null > /dev/null
+# Enforce permissions
+mkdir -p /var/lib/Repetier-Server
+chown -R repetierserver /var/lib/Repetier-Server
+echo "repetierserver ALL=NOPASSWD: /usr/local/Repetier-Server/bin/RepetierInstaller" > /etc/sudoers.d/repetierserver-RepetierInstaller
+chmod 755 /usr/local/Repetier-Server/modules/firmware/bin/avrdude
+chmod 755 /usr/local/Repetier-Server/modules/firmware/bin/bossac
+chmod 755 /usr/local/Repetier-Server/modules/firmware/bin/teensy_loader_cli
+if command -v systemctl >/dev/null
+then
+    systemctl --system daemon-reload
+fi
+/etc/init.d/RepetierServer start
