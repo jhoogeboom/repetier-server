@@ -1,12 +1,18 @@
-FROM resin/rpi-raspbian:latest
+FROM resin/raspberrypi3-debian:latest
+
+ENV INITSYSTEM off
+
+RUN echo 'Yes, do as I say!' | apt-get remove systemd -y --force-yes
 
 RUN apt-get update \
-    && apt-get install wget\
-    && apt-get install sysv-rc
+    && apt-get install wget
 
 RUN wget --output-document repetier-server.deb -q http://download.repetier.com/files/server/debian-armel/Repetier-Server-0.90.1-Linux.deb
 RUN dpkg -i repetier-server.deb
 
+# RUN touch /var/lib/Repetier-Server/logs/server.log
+
+# VOLUME /var/lib/Repetier-Server
 
 
 # COPY entrypoint.sh /entrypoint.sh
