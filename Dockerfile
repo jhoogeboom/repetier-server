@@ -12,12 +12,11 @@ RUN touch /var/lib/Repetier-Server/logs/server.log
 
 VOLUME /var/lib/Repetier-Server
 
+# COPY entrypoint.sh /entrypoint.sh
+# RUN chmod 755 /entrypoint.sh
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod 755 /entrypoint.sh
+# EXPOSE 3344
 
-EXPOSE 3344
+# ENTRYPOINT ["/entrypoint.sh"]
 
-ENTRYPOINT ["/entrypoint.sh"]
-
-CMD tail -f /var/lib/Repetier-Server/logs/server.log
+# CMD tail -f /var/lib/Repetier-Server/logs/server.log
