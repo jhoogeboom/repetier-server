@@ -5,7 +5,7 @@ RUN apt-get update \
     && apt-get dist-upgrade -y \
     && apt-get install wget
 
-RUN wget --output-document repetier-server.deb -q http://download.repetier.com/files/server/debian-armel/Repetier-Server-0.70.1-Linux.deb
+RUN wget --output-document repetier-server.deb -q http://download.repetier.com/files/server/debian-armel/Repetier-Server-0.90.1-Linux.deb
 RUN dpkg -i repetier-server.deb
 
 
