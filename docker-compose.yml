@@ -6,6 +6,8 @@ services:
       - "3344:3344"
     volumes:
       - data:/var/lib/Repetier-Server
+    devices:
+      - "/dev/ttyACM0:/dev/ttyACM0"
 
 volumes:
   data:

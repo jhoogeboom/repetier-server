@@ -1,0 +1,43 @@
+#!/bin/bash
+echo Install Repetier-Server
+echo "You may see warnings about groups. These can be ignored."
+adduser --quiet --home /var/lib/Repetier-Server --system --disabled-login --ingroup dialout repetierserver
+adduser repetierserver tty
+adduser repetierserver dialout
+adduser repetierserver intserial
+adduser repetierserver ugpio
+# Enforce permissions
+mkdir -p /var/lib/Repetier-Server
+chown -R repetierserver /var/lib/Repetier-Server
+echo "repetierserver ALL=NOPASSWD: /usr/local/Repetier-Server/bin/RepetierInstaller" > /etc/sudoers.d/repetierserver-RepetierInstaller
+chmod 755 /usr/local/Repetier-Server/modules/firmware/bin/avrdude
+chmod 755 /usr/local/Repetier-Server/modules/firmware/bin/bossac
+chmod 755 /usr/local/Repetier-Server/modules/firmware/bin/teensy_loader_cli
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+if [ ! -f /usr/local/Repetier-Setup/noautoupdate ]
+then
+  if [ -f /usr/local/Repetier-Setup/bin/manageWifiAccess ]
+  then
+    wlanversion=`/usr/local/Repetier-Setup/bin/manageWifiAccess info | grep version: | awk ' /version:/ {gsub(/^.*:/,"")};{print}'`
+    if [ "3" -gt "$wlanversion" ]; then
+      cp /usr/local/Repetier-Server/debian/manageWifiAccess /usr/local/Repetier-Setup/bin/manageWifiAccess
+      cp /usr/local/Repetier-Server/debian/activateAP /usr/local/Repetier-Setup/bin/activateAP
+      cp /usr/local/Repetier-Server/debian/firstRun /usr/local/Repetier-Setup/bin/firstRun
+      chmod 755 /usr/local/Repetier-Setup/bin/manageWifiAccess
+      chmod 755 /usr/local/Repetier-Setup/bin/activateAP
+      chmod 755 /usr/local/Repetier-Setup/bin/firstRun
+    fi
+  fi
+fi
+if command -v systemctl >/dev/null
+then
+    rm /etc/init.d/RepetierServer
+    chmod 644 /lib/systemd/system/RepetierServer.service
+    systemctl --system daemon-reload
+    systemctl enable RepetierServer.service
+    # service RepetierServer start
+else
+    rm /lib/systemd/system/RepetierServer.service
+    update-rc.d RepetierServer start 20 2 3 4 5 . stop 20 0 1 6 . 2> /dev/null > /dev/null
+    /etc/init.d/RepetierServer start
+fi
