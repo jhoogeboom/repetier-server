@@ -1,10 +1,10 @@
-# Repetier Server for RPi
+# Repetier Server for RPi3
 
 ### Installation
 
 ```sh
-$ docker run -it --device /dev/ttyUSB0 -v /var/lib/Repetier-Server:/var/lib/Repetier-Server -p 3344:3344 -d negash/rpi-repetier-server
+$ docker-compose up
 ```
-And you get Repetier Server on `:3344` port and saved data in `/var/lib/Repetier-Server`.
+And you get Repetier Server on `:3344` port and saved data in a docker volume named data.
 
-`--device /dev/ttyUSB0` - this is usb with 3D printer
+edit the device in docker-compose to match the device used like `/dev/ttyUSB0`
