@@ -3,6 +3,7 @@
 ### Installation
 
 ```sh
+$ docker-compose build
 $ docker-compose up
 ```
 And you get Repetier Server on `:3344` port and saved data in a docker volume named data.
