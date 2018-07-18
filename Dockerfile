@@ -1,4 +1,4 @@
-FROM resin/raspberrypi3-debian:latest
+FROM resin/raspberrypi3-debian:stretch
 ENV INITSYSTEM on
 
 RUN apt-get update \
